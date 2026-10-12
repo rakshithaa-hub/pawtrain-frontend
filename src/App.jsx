@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-const API_URL = "http://localhost:8080/api";
+const API_URL =
+    import.meta.env.VITE_API_URL || "http://localhost:8080/api";
 
 function App() {
     const [programs, setPrograms] = useState([]);
@@ -36,8 +37,8 @@ function App() {
                 return response.json();
             })
             .then(setDogs)
-            .catch(() => {
-                console.error("Could not load dogs");
+            .catch((error) => {
+                console.error("Could not load dogs:", error);
             });
     }, []);
 
@@ -114,8 +115,7 @@ function App() {
 
                     <button
                         onClick={() =>
-                            document
-                                .getElementById("programs")
+                            document.getElementById("programs")
                                 ?.scrollIntoView({ behavior: "smooth" })
                         }
                     >
@@ -144,8 +144,7 @@ function App() {
                         <button
                             className="hero-button"
                             onClick={() =>
-                                document
-                                    .getElementById("programs")
+                                document.getElementById("programs")
                                     ?.scrollIntoView({ behavior: "smooth" })
                             }
                         >
@@ -177,9 +176,7 @@ function App() {
                                     key={program.id}
                                 >
                                     <div className="card-icon">🐾</div>
-
                                     <h3>{program.name}</h3>
-
                                     <p>{program.description}</p>
 
                                     <div className="program-info">
@@ -211,9 +208,7 @@ function App() {
                             id="booking"
                             onSubmit={handleBooking}
                         >
-                            <p className="small-title">
-                                LET'S GET STARTED
-                            </p>
+                            <p className="small-title">LET'S GET STARTED</p>
 
                             <h2>Book {selectedProgram.name}</h2>
 
@@ -248,9 +243,7 @@ function App() {
                                 id="bookingDate"
                                 type="date"
                                 value={bookingDate}
-                                min={new Date()
-                                    .toISOString()
-                                    .split("T")[0]}
+                                min={new Date().toLocaleDateString("en-CA")}
                                 onChange={(event) =>
                                     setBookingDate(event.target.value)
                                 }
@@ -333,9 +326,7 @@ function App() {
 
             <footer>
                 <div className="logo">🐾 PawTrain</div>
-
                 <p>Helping dogs become their best selves.</p>
-
                 <p>© 2026 PawTrain</p>
             </footer>
         </div>
@@ -405,7 +396,9 @@ function AdminBookings() {
 
             if (response.status === 401 || response.status === 403) {
                 setIsLoggedIn(false);
-                throw new Error("Your admin session was rejected. Please log in again.");
+                throw new Error(
+                    "Your admin session was rejected. Please log in again."
+                );
             }
 
             if (!response.ok) {
@@ -438,7 +431,9 @@ function AdminBookings() {
 
             if (response.status === 401 || response.status === 403) {
                 setIsLoggedIn(false);
-                throw new Error("Admin authentication failed. Please log in again.");
+                throw new Error(
+                    "Admin authentication failed. Please log in again."
+                );
             }
 
             if (!response.ok) {
@@ -449,7 +444,9 @@ function AdminBookings() {
             await loadBookings();
         } catch (error) {
             console.error("Updating booking error:", error);
-            setMessage(error.message || "Could not update status. Please try again.");
+            setMessage(
+                error.message || "Could not update status. Please try again."
+            );
         } finally {
             setUpdatingId(null);
         }
@@ -476,7 +473,9 @@ function AdminBookings() {
                         type="text"
                         autoComplete="username"
                         value={username}
-                        onChange={(event) => setUsername(event.target.value)}
+                        onChange={(event) =>
+                            setUsername(event.target.value)
+                        }
                         required
                     />
 
@@ -486,7 +485,9 @@ function AdminBookings() {
                         type="password"
                         autoComplete="current-password"
                         value={password}
-                        onChange={(event) => setPassword(event.target.value)}
+                        onChange={(event) =>
+                            setPassword(event.target.value)
+                        }
                         required
                     />
 
